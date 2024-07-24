@@ -6,7 +6,7 @@ interface Bio {
   value: UserDetails | string;
 }
 
-interface UserDetails {
+export interface UserDetails {
   firstName: string;
   lastName: string;
   email: string;

@@ -9,7 +9,7 @@ import img2 from "~/assets/white.svg";
 import ProfileSkeleton from "~/components/profileSkeleton";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/common/Input";
-import { db } from "~/lib/dexie";
+import { db, UserDetails } from "~/lib/dexie";
 import { useLiveQuery } from "dexie-react-hooks";
 type Props = {};
 
@@ -21,10 +21,10 @@ interface Bio {
 }
 
 const Profile = (props: Props) => {
-  const [userDetails, setUserDetail] = useState({
-    firstName: "Mishael",
-    lastName: "Henry",
-    email: "henrymishael.hm@gmail.com",
+  const [userDetails, setUserDetail] = useState<UserDetails>({
+    firstName: "",
+    lastName: "",
+    email: "",
   });
   const [isLoading, setIsLoading] = useState(true);
   const [editFormIsOpen, setEditFormIsOpen] = useState(false);
@@ -36,10 +36,10 @@ const Profile = (props: Props) => {
     const profilePhotoFromDb = await db.bio.get("profilePhoto");
 
     if (userDetailsFromDb && userDetailsFromDb.value) {
-      setUserDetail(userDetailsFromDb.value);
+      setUserDetail(userDetailsFromDb.value as any);
     }
     if (profilePhotoFromDb && profilePhotoFromDb.value) {
-      setProfilePhoto(profilePhotoFromDb.value);
+      setProfilePhoto(profilePhotoFromDb.value as string);
     }
   };
 
@@ -64,7 +64,7 @@ const Profile = (props: Props) => {
     const fetchProfilePhoto = async () => {
       const profilePhotoFromDb = await db.bio.get("profilePhoto");
       if (profilePhotoFromDb && profilePhotoFromDb.value) {
-        setProfilePhoto(profilePhotoFromDb.value);
+        setProfilePhoto(profilePhotoFromDb.value as string);
       }
       setIsLoading(false);
     };
