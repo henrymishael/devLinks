@@ -3,31 +3,120 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --primary: 252 100% 62%;
+  --primary-hover: 252 100% 84%;
+  --primary-light: 252 100% 96%;
+
+  --secondary: 0 0% 20%;
+  --secondary-foreground: 0 0% 45%;
+
+  --border: 0 0% 85%;
+
+  --background: 0 0% 100%;
+  --background-foreground: 0 0% 98%;
+
+  --error: 0 100% 61%;
+
+  /* Heading M */
+  --heading-m-font-family: "Instrument Sans", sans-serif;
+  --heading-m-font-weight: bold;
+  --heading-m-font-size: 32px;
+  --heading-m-line-height: 1.5;
+
+  /* Heading M medium */
+  --heading-medium-font-family: "Instrument Sans", sans-serif;
+  --heading-medium-font-weight: semibold;
+  --heading-medium-font-size: 18px;
+  --heading-medium-line-height: 1.5;
+
+  /* Heading M mobile*/
+  --head-m-font-family: "Instrument Sans", sans-serif;
+  --head-m-font-weight: bold;
+  --head-m-font-size: 24px;
+  --head-m-line-height: 1.5;
+
+  /* Heading S */
+  --heading-s-font-family: "Instrument Sans", sans-serif;
+  --heading-s-font-weight: bold;
+  --heading-s-font-size: 16px;
+  --heading-s-line-height: 1.5;
+
+  /* Body M */
+  --body-m-font-family: "Instrument Sans", sans-serif;
+  --body-m-font-weight: normal;
+  --body-m-font-size: 16px;
+  --body-m-line-height: 1.5;
+
+  /* Body M medium */
+  --body-medium-font-family: "Instrument Sans", sans-serif;
+  --body-medium-font-weight: normal;
+  --body-medium-font-size: 14px;
+  --body-medium-line-height: 1.5;
+
+  /* Body S */
+  --body-s-font-family: "Instrument Sans", sans-serif;
+  --body-s-font-weight: normal;
+  --body-s-font-size: 12px;
+  --body-s-line-height: 1.5;
+
+  --active: 0px 0px 32px 0px rgba(99, 60, 255, 0.25);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.heading-m {
+  font-family: var(--heading-m-font-family);
+  font-weight: var(--heading-m-font-weight);
+  font-size: var(--heading-m-font-size);
+  line-height: var(--heading-m-line-height);
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.heading-medium {
+  font-family: var(--heading-medium-font-family);
+  font-weight: var(--heading-medium-font-weight);
+  font-size: var(--heading-medium-font-size);
+  line-height: var(--heading-medium-line-height);
+}
+
+.head-m {
+  font-family: var(--head-m-font-family);
+  font-weight: var(--head-m-font-weight);
+  font-size: var(--head-m-font-size);
+  line-height: var(--head-m-line-height);
+}
+
+.heading-s {
+  font-family: var(--heading-s-font-family);
+  font-weight: var(--heading-s-font-weight);
+  font-size: var(--heading-s-font-size);
+  line-height: var(--heading-s-line-height);
+}
+
+.body-m {
+  font-family: var(--body-m-font-family);
+  font-weight: var(--body-m-font-weight);
+  font-size: var(--body-m-font-size);
+  line-height: var(--body-m-line-height);
+}
+
+.body-medium {
+  font-family: var(--body-medium-font-family);
+  font-weight: var(--body-medium-font-weight);
+  font-size: var(--body-medium-font-size);
+  line-height: var(--body-medium-line-height);
+}
+
+.body-s {
+  font-family: var(--body-s-font-family);
+  font-weight: var(--body-s-font-weight);
+  font-size: var(--body-s-font-size);
+  line-height: var(--body-s-line-height);
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .box {
+    box-shadow: 0px 0px 32px 0px rgba(99, 60, 255, 0.25);
   }
 }
