@@ -56,10 +56,11 @@ const Login = (props: Props) => {
       );
       const user = userCredential.user;
       console.log("User logged in successfully!");
-      router.push("/Home/Profile");
-    } catch (err: any) {
-      console.error("Error logging in user:", err.message);
-      // setEmailError(err.message); // Display the error to the user
+
+      // Redirect to the desired page
+      router.push("/Home/dashboard");
+    } catch (error) {
+      console.error("Error logging in user:", error);
     }
   };
 

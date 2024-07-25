@@ -11,6 +11,8 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/common/Input";
 import { db, UserDetails } from "~/lib/dexie";
 import { useLiveQuery } from "dexie-react-hooks";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "~/lib/request";
 type Props = {};
 
 interface Bio {
@@ -34,15 +36,24 @@ const Profile = (props: Props) => {
   const setDataFromDb = async () => {
     const userDetailsFromDb = await db.bio.get("info");
     const profilePhotoFromDb = await db.bio.get("profilePhoto");
+    const userEmail = auth.currentUser?.email; // Get the email from Firebase auth
 
     if (userDetailsFromDb && userDetailsFromDb.value) {
-      setUserDetail(userDetailsFromDb.value as any);
+      setUserDetail({
+        ...userDetailsFromDb.value,
+        email: userEmail ?? "", // Set email from Firebase auth, default to empty string if null or undefined
+      });
+    } else {
+      setUserDetail((prevDetails) => ({
+        ...prevDetails,
+        email: userEmail ?? "", // Set email from Firebase auth, default to empty string if null or undefined
+      }));
     }
+
     if (profilePhotoFromDb && profilePhotoFromDb.value) {
       setProfilePhoto(profilePhotoFromDb.value as string);
     }
   };
-
   const updateUserDetails = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -94,8 +105,29 @@ const Profile = (props: Props) => {
   };
 
   useEffect(() => {
-    setDataFromDb();
-  }, []);
+    const authListener = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, reset state
+        setUserDetail({
+          firstName: "",
+          lastName: "",
+          email: "",
+        });
+        setProfilePhoto("");
+        setDataFromDb();
+      } else {
+        // User is signed out, reset state
+        setUserDetail({
+          firstName: "",
+          lastName: "",
+          email: "",
+        });
+        setProfilePhoto("");
+      }
+    });
+
+    return () => authListener();
+  }, [auth]);
 
   const editForm = (
     <form className='flex flex-col gap-3' onSubmit={updateUserDetails}>

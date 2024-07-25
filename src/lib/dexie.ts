@@ -3,7 +3,7 @@ import Dexie, { Table } from "dexie";
 // Define interfaces for the data structures
 interface Bio {
   key: string;
-  value: UserDetails | string;
+  value: UserDetails | any;
 }
 
 export interface UserDetails {
