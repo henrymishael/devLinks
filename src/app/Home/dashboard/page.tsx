@@ -1,22 +1,69 @@
+"use client";
 import { PlusIcon } from "lucide-react";
 import Image from "next/image";
-import React from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import preview from "~/assets/preview-section.svg";
 import empty from "~/assets/empty.svg";
 import emptyM from "~/assets/emptyM.svg";
 import ProfileSkeleton from "~/components/profileSkeleton";
 import { Button } from "~/components/ui/button";
+import Preview from "~/components/common/preview";
+import { db, UserDetails } from "~/lib/dexie";
+import { auth } from "~/lib/request";
+import { handleAuthStateChanged, setDataFromDb } from "~/lib/fetchData";
 
 type Props = {};
 
 const LinkPage = (props: Props) => {
+  const [userDetails, setUserDetail] = useState<UserDetails>({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [editFormIsOpen, setEditFormIsOpen] = useState(false);
+  const [profilePhoto, setProfilePhoto] = useState("");
+
+  useEffect(() => {
+    const fetchProfilePhoto = async () => {
+      const profilePhotoFromDb = await db.bio.get("profilePhoto");
+      if (profilePhotoFromDb && profilePhotoFromDb.value) {
+        setProfilePhoto(profilePhotoFromDb.value as string);
+      }
+      setIsLoading(false);
+    };
+
+    fetchProfilePhoto();
+  }, []);
+
+  useEffect(() => {
+    const authListener = handleAuthStateChanged(
+      setUserDetail,
+      setProfilePhoto,
+      async () => {
+        const userEmail = auth.currentUser?.email; // Get the email from Firebase auth
+        await setDataFromDb(setUserDetail, setProfilePhoto, userEmail);
+      }
+    );
+
+    return () => authListener();
+  }, []);
   const editForm = <div></div>;
   return (
     <div className='flex flex-col lg:flex-row gap-6'>
       <div className='p-6 bg-white rounded-xl min-w-[560px] hidden xl:flex items-center justify-center '>
         <Image className='relative ' src={preview} alt={"preview"} />
         <div className='absolute hidden xl:block'>
-          <ProfileSkeleton />
+          {isLoading ? (
+            <ProfileSkeleton />
+          ) : (
+            <Preview
+              img={profilePhoto}
+              firstName={userDetails.firstName}
+              lastName={userDetails.lastName}
+              email={userDetails.email}
+            />
+          )}
         </div>
       </div>
       <div className='bg-white w-auto p-10 pt-12 rounded-xl flex flex-col md:gap-6 gap-10'>

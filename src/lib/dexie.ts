@@ -9,7 +9,7 @@ interface Bio {
 export interface UserDetails {
   firstName: string;
   lastName: string;
-  email: string;
+  email: any;
 }
 
 interface Link {
